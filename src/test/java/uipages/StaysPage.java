@@ -16,6 +16,8 @@ public class StaysPage {
     WebDriver driver = CommonEvents.getDriver();
 
     JavascriptExecutor js = (JavascriptExecutor) driver;
+    String newDay;
+    String toDate;
 
 
     //locator for going to
@@ -86,26 +88,41 @@ public class StaysPage {
         String selectedFirstHotel = driver.findElement(selectedFirstSearchResultText).getText();
         return String.valueOf(selectedFirstHotel);
     }
+    public String newDate(){
+    DateFormat dateFormat = new SimpleDateFormat("dd");
+    Date currentDate = new Date();
+    System.out.println(dateFormat.format(currentDate));
+    Calendar c1 = Calendar.getInstance();
+    c1.setTime(currentDate);
+    c1.add(Calendar.DAY_OF_YEAR, 1);
+    String newDate = dateFormat.format(c1.getTime());
+    System.out.println("from date is "+ newDate);
+    return newDate;
+    }
 
-    public  void datepicker(){
+    public String futureDate(){
         DateFormat dateFormat = new SimpleDateFormat("dd");
         Date currentDate = new Date();
         System.out.println(dateFormat.format(currentDate));
         Calendar c1 = Calendar.getInstance();
         c1.setTime(currentDate);
-        c1.add(Calendar.DAY_OF_YEAR, 2);
-        String newDate = dateFormat.format(c1.getTime());
-        System.out.println("todays date is "+ newDate);
+        c1.add(Calendar.DAY_OF_YEAR, 3);
+        String futureDate = dateFormat.format(c1.getTime());
+        System.out.println("To date is "+ futureDate);
+        return futureDate;
+    }
 
-        driver.findElement(fromDate).click();
-        driver.findElement(By.xpath("//div[contains(@class,'uitk-date-picker date-picker-menu')]")).click();
-        //driver.findElement(By.xpath("//td[contains(@class,'uitk-date-picker-day-number startSelected')]")).sendKeys(newDate);
-       // WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        driver.findElement(By.xpath("//button[contains(@aria-label,'16 Apr. 2021.')]")).click();
-        driver.findElement(By.xpath("//button[contains(@aria-label,'19 Apr. 2021.')]")).click();
+    public  void datepicker(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOf(driver.findElement(fromDate))).click();
+
+        newDay = newDate();
+        toDate = futureDate();
+
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@aria-label, '"+newDay+" Apr. 2021')]"))).click();
+        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@aria-label, '"+toDate+" Apr. 2021')]"))).click();
         driver.findElement(By.xpath("//button[contains(@class,'uitk-button uitk-button-small uitk-button-has-text uitk-button-primary uitk-flex-align-self-flex-end uitk-flex-item uitk-flex-shrink-0 dialog-done')]")).click();
 
     }
-
 
 }

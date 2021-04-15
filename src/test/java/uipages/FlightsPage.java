@@ -7,6 +7,10 @@ import java.util.concurrent.TimeUnit;
 
 public class FlightsPage {
     WebDriver driver = CommonEvents.getDriver();
+    StaysPage sp = new StaysPage();
+   String newDay = sp.newDate();
+
+
 
     //locator for get flights link
     private By getTravelOptions = By.xpath("//div[@id='gc-custom-header-tool-bar-shop-menu']");
@@ -23,15 +27,14 @@ public class FlightsPage {
     private By getDestinationField = By.xpath("//button[@aria-label='Going to']");
     //locator for selecting going to option
     private By getDestinationOption = By.xpath("//*[@id=\"app-layer-location-field-leg1-destination-ta-dialog\"]/div[2]/div/div[2]/ul/li[1]/button");
-    //*[@id="app-layer-location-field-leg1-destination-ta-dialog"]/div[2]/div/div[2]/ul/li[1]/button
     //locator for departure text
     private By getDepartureText = By.xpath("//span[@class='title-city-text']");
     //locator for return flight test
     private By getReturnText = By.xpath("//span[@class='title-city-text']");
     //locator for selecting departure flight
-    private By getDepartureFlight = By.xpath("//li[@id='flight-module-2021-04-16t07:00:00+10:00-coach-syd-avv-jq-603_2021-04-19t19:20:00+10:00-coach-avv-syd-jq-608_']//button[@type='button']");
+    private By getDepartureFlight = By.xpath("//*[contains(@id, '"+newDay+"')]//button[@type='button']");
     //locator for selecting return flight
-    private By getReturnFlight = By.xpath("//li[@id='flight-module-2021-04-16t07:00:00+10:00-coach-syd-avv-jq-603_2021-04-19t19:20:00+10:00-coach-avv-syd-jq-608_']//button[@type='button']");
+    private By getReturnFlight = By.xpath("//*[contains(@id, '"+newDay+"')]//button[@type='button']");
 
 
 
@@ -60,6 +63,7 @@ public class FlightsPage {
     }
     //method for selecting departure flight
     public void selectDepartureFlight(){
+        System.out.println("flightDate::"+newDay);
         driver.findElement(getDepartureFlight).click();
     }
     //method for selecting return flight
@@ -81,19 +85,19 @@ public class FlightsPage {
 
     }
 
-    public void enterOrigin(){
+    public void enterOrigin(String origin){
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         WebElement originButton = driver.findElement(getOriginField);
-        originButton.sendKeys("Sydney");
+        originButton.sendKeys(origin);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         WebElement originOption =  driver.findElement(getOriginOption);
         originOption.click();
 
     }
-    public void enterDestinatin(){
+    public void enterDestinatin(String dest){
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         WebElement destinationButton = driver.findElement(getDestinationField);
-        destinationButton.sendKeys("Melbourne"+ "\n");
+        destinationButton.sendKeys(dest+ "\n");
         /*driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         WebElement destinationOption =  driver.findElement(getDestinationOption);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -101,5 +105,3 @@ public class FlightsPage {
     }
 
 }
-//*[@id="location-field-leg1-origin-menu"]/div[2]
-//*[@id="location-field-leg1-origin-menu"]/div[2]/ul/li[1] copy first result

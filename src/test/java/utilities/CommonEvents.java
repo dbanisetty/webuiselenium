@@ -35,12 +35,5 @@ public class CommonEvents {
         ArrayList<String> tabs_windows = new ArrayList<String> (driver.getWindowHandles());
         driver.switchTo().window(tabs_windows.get(tab_index));
 
-
-        /*String currentTab = driver.getWindowHandle();
-        driver.findElement(By.linkText("Twitter Advertising Blog")).click();
-        ArrayList<String> newTab = new ArrayList<String>(driver.getWindowHandles());
-        newTab.remove(currentTab);
-        // change focus to new tab
-        driver.switchTo().window(newTab.get(index));*/
     }
 }

@@ -62,10 +62,10 @@ public class UiStepDefinitions {
         flights.setTravelOptions();
         flights.setFlightsLink();
     }
-    @Given("^enters leavingFrom and GoingTo$")
-    public void enters_leavingFrom_and_GoingTo()  {
-        flights.enterOrigin();
-        flights.enterDestinatin();
+    @Given("^enters leavingFrom \"([^\"]*)\" and GoingTo \"([^\"]*)\"$")
+    public void enters_leavingFrom_and_GoingTo(String origin, String destination)  {
+        flights.enterOrigin(origin);
+        flights.enterDestinatin(destination);
     }
 
     @Given("^selects departing and returning dates$")
@@ -78,12 +78,12 @@ public class UiStepDefinitions {
         String departureFlightDescription = flights.getDepartureFlightText();
         System.out.println("departure text::" + departureFlightDescription);
         Assert.assertTrue(departureFlightDescription.contains("Select your departure to Melbourne"));
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
         flights.selectDepartureFlight();
         String returnFlightDescription = flights.getReturnFlightText();
         System.out.println("return text::" + returnFlightDescription);
         Assert.assertTrue(returnFlightDescription.contains("Select your return to Sydney"));
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
         flights.selectReturnFlight();
     }
 }
