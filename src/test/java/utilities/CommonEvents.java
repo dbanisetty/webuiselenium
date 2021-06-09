@@ -31,7 +31,6 @@ public class CommonEvents {
     }
 
     public  void windowHandles(Integer tab_index){
-
         ArrayList<String> tabs_windows = new ArrayList<String> (driver.getWindowHandles());
         driver.switchTo().window(tabs_windows.get(tab_index));
 

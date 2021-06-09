@@ -1,15 +1,16 @@
 package uipages;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.Color;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import utilities.CommonEvents;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.*;
 
 public class StaysPage {
 
@@ -123,6 +124,139 @@ public class StaysPage {
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(@aria-label, '"+toDate+" Apr. 2021')]"))).click();
         driver.findElement(By.xpath("//button[contains(@class,'uitk-button uitk-button-small uitk-button-has-text uitk-button-primary uitk-flex-align-self-flex-end uitk-flex-item uitk-flex-shrink-0 dialog-done')]")).click();
 
+        //div[@id='c20660']//div[2]//ul[1]//li[1]//a[1]
+
+        //div[@id='c19846']//div[@class='news-list-view']//ul[@class='list_style_1']//li[2]//div[1]//div[2]//div[1]//a//span
+        // div[@id='c19846']//div[@class='news-list-view']//ul[1]//li[1]//div[1]//div[2]//div[1]//a//span
+
     }
+
+    public void getElementsByColor(){
+        String expectedBlue = "";
+        String eleColor = driver.findElement(By.xpath("")).getCssValue("color");
+        String eleHexColor = Color.fromString(eleColor).asHex();
+        Assert.assertEquals(expectedBlue, eleHexColor);
+    }
+
+    public void scrollByfunc(){
+
+        JavascriptExecutor js = (JavascriptExecutor)driver;
+        js.executeScript("window.scrollBy(0,1000)");
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+    }
+
+    public void scrollIntoView(){
+        WebElement ele = driver.findElement(By.xpath(""));
+        JavascriptExecutor js = (JavascriptExecutor)driver;
+        js.executeScript("arguments[0].scrollIntoView();", ele);
+        ele.getText();
+    }
+
+   public void setWindow(){
+        Dimension dm = new Dimension(1020, 780);
+        driver.manage().window().setSize(dm);
+   }
+
+
+   //login page - w0, page A - w1, page B - w2, pageC - w3
+    public  void multipleWindows(Integer tab_index){
+        String parentWindow = driver.getWindowHandle();
+        WebElement submit = driver.findElement(By.xpath(""));
+        submit.click();
+        Set<String> pageAwindow = driver.getWindowHandles();
+        driver.switchTo().window((String) pageAwindow.toArray()[1]);
+        WebElement pageAbutton = driver.findElement(By.xpath(""));
+        pageAbutton.click();
+        Set<String> pageBwindow = driver.getWindowHandles();
+        driver.switchTo().window((String)pageBwindow.toArray()[2]);
+        WebElement pageBbutton = driver.findElement(By.xpath(""));
+        pageBbutton.click();
+        Set<String> pageCwindow = driver.getWindowHandles();
+        driver.switchTo().window((String)pageCwindow.toArray()[3]);
+        driver.switchTo().window(parentWindow);
+
+    }
+
+    public void multipleWindowsWithRemove(){
+     String parentWindow = driver.getWindowHandle();
+        WebElement submit = driver.findElement(By.xpath(""));
+        submit.click();
+
+        Set<String> pageA = driver.getWindowHandles();
+        pageA.remove(parentWindow);
+        driver.switchTo().window((String)pageA.toArray()[0]);
+        WebElement pageAbutton = driver.findElement(By.xpath(""));
+        pageAbutton.click();
+
+        Set<String> pageB = driver.getWindowHandles();
+        pageB.removeAll(pageA);
+        driver.switchTo().window((String)pageB.toArray()[0]);
+        WebElement pageBbutton = driver.findElement(By.xpath(""));
+        pageBbutton.click();
+
+        Set<String> pageC = driver.getWindowHandles();
+        pageC.removeAll(pageB);
+        driver.switchTo().window((String)pageC.toArray()[0]);
+        WebElement pageCbutton = driver.findElement(By.xpath(""));
+        pageCbutton.click();
+
+    }
+
+    public void tableRowCol(){
+
+        WebElement table = driver.findElement(By.xpath("/table/tbody"));
+        //get rows of table
+        List<WebElement> table_rows = table.findElements(By.tagName("/tr"));
+        //calculate rows in table
+        int row_count = table_rows.size();
+        for(int row =0; row<row_count; row++){
+           List<WebElement> col_rows = table_rows.get(row).findElements(By.tagName("/td"));
+           int col_count = col_rows.size();
+           for(int col=0; col<col_count; col++){
+               String celText = col_rows.get(col).getText();
+               String cellItem = driver.findElement(By.xpath("")).getText();
+               if(cellItem.contains("VALUE")){
+                  String specificItem = driver.findElement(By.xpath("//table[@id=''table]/tbody/tr/td[1]")).getText();
+                   System.out.println(specificItem);
+                  break;
+
+               }
+
+           }
+        }
+    }
+
+    public void specificTableValue(){
+
+        //get table xpath
+        WebElement myTable = driver.findElement(By.tagName("//table/tbody"));
+        //get table rows
+        List<WebElement> table_rows = myTable.findElements(By.tagName("/tr"));
+        //get row count
+        int row_count = table_rows.size();
+        //iterate thru rows
+        for(int row = 0; row<row_count; row++){
+            //get columns from each row
+            List<WebElement> table_columns = table_rows.get(row).findElements(By.tagName("/td"));
+            //get columns count
+            int col_count = table_columns.size();
+            //print no:of columns in specific row
+            System.out.println("number of cells in row" + row + "are" + col_count);
+            //iterate thru columns
+            for(int col=0; col<col_count; col++){
+                String cellText = table_columns.get(col).getText();
+                //print values of column
+                System.out.println("cell number"+ table_columns + "cell text" + cellText );
+            }
+        }
+
+    }
+   /* List<WebElement> rows = driver.findElements(By.cssSelector("table.table_results tr"));
+for (WebElement row: rows) {
+        List<WebElement> cells = row.findElements(By.cssSelector("td.data"));
+        for (WebElement cell: cells) {
+            System.out.println(cell.getText());
+        }
+    }*/
 
 }
